@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "for testing",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsc && node dist/index.js"
+  },
+  "author": "BeigeWoods",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.15.5",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}
