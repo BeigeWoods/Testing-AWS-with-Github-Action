@@ -42,7 +42,7 @@ jobs:
       - name: create .env.test file
         run: touch .env
           cat << EOF >> .env.test
-          echo SECRET = secret
+          echo SECRET = ${{ secrets.SECRET }}
 
       - name: Make zip file
         run: zip -r $GITHUB_SHA.zip ./server/dist -x **/__test__/**
