@@ -2,8 +2,10 @@ name: Test CI-CD
 
 on:
   push:
-    paths:
-      - "./server/**"
+    # paths:
+    #   - "./server/**"
+    # paths-ignore:
+    #   - "**/__test__/**"
     branches:
       - main
 
@@ -32,6 +34,7 @@ jobs:
 
       - name: Make zip file
         run: zip -r intoTheS3.zip ./server/dist/
+        # run: zip -r $GITHUB_SHA.zip ./server/dist/
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -42,3 +45,4 @@ jobs:
 
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 intoTheS3.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+        # run: aws s3 cp --region ap-northeast-2 $GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
