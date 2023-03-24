@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  S3_BUCKET_NAME: dwitter-codes
+  S3_BUCKET_NAME: dwitter-codes/codes
 
 jobs:
   build:
