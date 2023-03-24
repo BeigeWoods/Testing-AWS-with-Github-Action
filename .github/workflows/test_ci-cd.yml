@@ -22,7 +22,7 @@ jobs:
 
       - name: Set up Node
         uses: actions/setup-node@v3
-        working-directory: "./server/**"
+        working-directory: "./server"
         with:
           node-version: v17.4.0
           cache: "npm"
