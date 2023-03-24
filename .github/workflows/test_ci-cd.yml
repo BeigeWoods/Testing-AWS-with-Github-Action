@@ -25,8 +25,9 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: v17.x
-          cache: npm
+          node-version: v17.4.0
+          cache: "npm"
+          cache-dependency-path: ./server/package-lock.json
 
       - name: Install Dependencies
         run: npm i
