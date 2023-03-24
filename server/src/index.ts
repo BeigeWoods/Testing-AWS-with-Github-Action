@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const a: string = "Hi";
-const b: number = 2023;
+const b: number = 2022;
 
 function sayHello(A: string, B: number): string {
   return `${A} ${B}! ${process.env.SECRET}`;
