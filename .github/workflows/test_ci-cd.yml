@@ -37,7 +37,7 @@ jobs:
       - name: Make zip file
         # run: zip -r intoTheS3.zip ./server/dist/
         run: zip -r $GITHUB_SHA.zip ./server/dist
-        working-directory: "./server"
+        # working-directory: "./server"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
