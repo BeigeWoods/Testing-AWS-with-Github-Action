@@ -4,8 +4,6 @@ on:
   push:
     paths:
       - "./server/**"
-    paths-ignore:
-      - "**/__test__/**"
     branches:
       - main
 
