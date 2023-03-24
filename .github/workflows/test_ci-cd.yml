@@ -11,6 +11,8 @@ on:
 
 env:
   S3_BUCKET_NAME: dwitter-codes/codes
+  DIRECTORY: ./server
+  REGION: ap-northeast-2
 
 jobs:
   build:
@@ -20,23 +22,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # - name: Set up Node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: v17.4.0
-      #     cache: "npm"
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: v17.x
+          cache: npm
 
       - name: Install Dependencies
         run: npm i
-        working-directory: "./server"
+        working-directory: ${{ env.DIRECTORY }}
 
       - name: Compile Typescript
         run: npx tsc
-        working-directory: "./server"
+        working-directory: ${{ env.DIRECTORY }}
 
       - name: Make zip file
-        # run: zip -r intoTheS3.zip ./server/dist/
-        run: zip -r $GITHUB_SHA.zip ./server/dist
+        run: zip -r $GITHUB_SHA.zip ./server/dist -x **/__test__/**
         # working-directory: "./server"
 
       - name: Configure AWS credentials
@@ -44,8 +45,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
+          aws-region: ${{ env.REGION }}
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 $GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
-        # run: aws s3 cp --region ap-northeast-2 $GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region $REGION $GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
