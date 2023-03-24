@@ -20,21 +20,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        working-directory: "./server"
-        with:
-          node-version: v17.4.0
-          cache: "npm"
+      # - name: Set up Node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: v17.4.0
+      #     cache: "npm"
 
       - name: Install Dependencies
         run: npm i
+        working-directory: "./server"
 
       - name: Compile Typescript
         run: npx tsc
+        working-directory: "./server"
 
       - name: Make zip file
         run: zip -r intoTheS3.zip ./server/dist/
+        working-directory: "./server"
         # run: zip -r $GITHUB_SHA.zip ./server/dist/
 
       - name: Configure AWS credentials
