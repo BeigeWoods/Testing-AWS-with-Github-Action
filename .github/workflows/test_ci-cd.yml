@@ -39,14 +39,20 @@ jobs:
         run: npx tsc
         working-directory: ${{ env.DIRECTORY }}
 
-      - name: Create .env.test file
-        run: touch .env
-          cat << EOF >> .env.test
-          SECRET = ${{ secrets.SECRET }}
+      # - name: Create .env.test file
+      #   run: touch .env
+      #     cat << EOF >> .env.test
+      #     SECRET = ${{ secrets.SECRET }}
 
       - name: Test Connection
         id: test_connect
         run: node ./server/dist/index.js
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          DATABASE: ${{ secrets.DATABASE }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          PORT: ${{ secrets.PORT }}
 
       # - name: If Connection Pass or Fail
       #   if: ${{ steps.test_connect.outputs.description }} == "connect!"
