@@ -39,7 +39,6 @@ jobs:
         run: npx tsc
         working-directory: ${{ env.DIRECTORY }}
 
-    steps:
       - name: Create .env.test file
         run: touch .env
           cat << EOF >> .env.test
@@ -48,12 +47,11 @@ jobs:
       - name: Test Connection
         id: test_connect
         run: node ./server/dist/index.js
-      
+
       - name: If Connection Pass or Fail
         if: ${{ steps.test_connect.outputs.description }} == "connect!"
         run: process.exit(0)
 
-    steps:
       - name: Make zip file
         run: zip -r $GITHUB_SHA.zip ./server/dist -x **/__test__/**
 
