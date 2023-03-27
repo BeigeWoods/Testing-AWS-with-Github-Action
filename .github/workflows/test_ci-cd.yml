@@ -48,14 +48,14 @@ jobs:
         id: test_connect
         run: node ./server/dist/index.js
         env:
-          HOST: ${{ secrets.HOST }}
-          USERNAME: ${{ secrets.USERNAME }}
-          DATABASE: ${{ secrets.DATABASE }}
-          PASSWORD: ${{ secrets.PASSWORD }}
+          # HOST: ${{ secrets.HOST }}
+          # USERNAME: ${{ secrets.USERNAME }}
+          # DATABASE: ${{ secrets.DATABASE }}
+          # PASSWORD: ${{ secrets.PASSWORD }}
           PORT: ${{ secrets.PORT }}
 
       - name: If Connection Pass or Fail
-        if: ${{ failure() }}
+        if: ${{ steps.test_connect.success() }}
         run: exit 1
 
       - name: Make zip file

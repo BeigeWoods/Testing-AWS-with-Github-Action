@@ -5,19 +5,23 @@ import mysql from "mysql2";
 dotenv.config();
 const app = express();
 
-const pool = mysql.createPool({
-  host: process.env.HOST,
-  user: process.env.USERNAME,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
+app.listen(process.env.PORT, () => {
+  console.log("connect!");
 });
 
-const db = pool.promise();
+// const pool = mysql.createPool({
+//   host: process.env.HOST,
+//   user: process.env.USERNAME,
+//   password: process.env.PASSWORD,
+//   database: process.env.DATABASE,
+// });
 
-db.getConnection()
-  .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log("connect!");
-    });
-  })
-  .catch((err: any) => console.error(err));
+// const db = pool.promise();
+
+// db.getConnection()
+//   .then(() => {
+//     app.listen(process.env.PORT, () => {
+//       console.log("connect!");
+//     });
+//   })
+//   .catch((err: any) => console.error(err));
