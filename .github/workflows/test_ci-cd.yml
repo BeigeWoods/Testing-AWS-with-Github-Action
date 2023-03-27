@@ -55,8 +55,8 @@ jobs:
           PORT: ${{ secrets.PORT }}
 
       - name: If Connection Pass or Fail
-        if: ${{ steps.test_connect.success() }}
-        run: exit 1
+        if: ${{ success() }}
+        run: exit 0
 
       - name: Make zip file
         run: zip -r $GITHUB_SHA.zip ./server/dist -x **/__test__/**
