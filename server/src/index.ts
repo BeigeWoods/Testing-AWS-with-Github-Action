@@ -1,11 +1,23 @@
 import dotenv from "dotenv";
+import express from "express";
+import mysql from "mysql2";
+
 dotenv.config();
+const app = express();
 
-const a: string = "Hi";
-const b: number = 2023;
+const pool = mysql.createPool({
+  host: process.env.HOST,
+  user: process.env.USERNAME,
+  password: process.env.PASSWORD + "#^",
+  database: process.env.DATABASE,
+});
 
-function sayHello(A: string, B: number): string {
-  return `${A} ${B}! ${process.env.SECRET}`;
-}
+const db = pool.promise();
 
-console.log(sayHello(a, b));
+db.getConnection()
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log("connect!");
+    });
+  })
+  .catch((err: any) => console.error(err));
