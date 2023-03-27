@@ -50,7 +50,7 @@ jobs:
 
       - name: If Connection Pass or Fail
         if: ${{ steps.test_connect.outputs.description }} == "connect!"
-        run: process.exit(0)
+        run: exit 0
 
       - name: Make zip file
         run: zip -r $GITHUB_SHA.zip ./server/dist -x **/__test__/**
