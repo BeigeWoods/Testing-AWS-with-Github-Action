@@ -39,7 +39,7 @@ jobs:
 
       - name: Compile typescript and test env
         working-directory: ${{ env.DIRECTORY }}
-        run: npm start
+        run: npm test
 
       # - name: Test Connection
       #   id: test_connect
