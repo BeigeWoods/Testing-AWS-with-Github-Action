@@ -10,6 +10,7 @@ env:
   DIRECTORY: ./server
   REGION: ap-northeast-2
   PORT: 3000
+  HERE: seoul
 
 jobs:
   build:
@@ -35,7 +36,7 @@ jobs:
         run: touch .env
           cat << EOF >> .env.test
           PORT = ${{ env.PORT }}
-          HERE = ${{ env.REGION }}
+          HERE = ${{ env.HERE }}
           EOF
 
       - name: Compile typescript and test env
