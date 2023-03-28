@@ -31,6 +31,10 @@ jobs:
         working-directory: ${{ env.DIRECTORY }}
         run: npm i
 
+      - name: Compile typescript
+        working-directory: ${{ env.DIRECTORY }}
+        run: npx tsc
+
       - name: Create .env.test file
         working-directory: ${{ env.DIRECTORY }}
         run: touch .env
@@ -41,7 +45,7 @@ jobs:
 
       - name: Compile typescript and test env
         working-directory: ${{ env.DIRECTORY }}
-        run: npm test
+        run: DOTENV_CONFIG_PATH=./.env.test node dist/index.js
 
       # - name: Test Connection
       #   id: test_connect
