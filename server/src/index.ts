@@ -8,7 +8,7 @@ const app = express();
 function required(key: string): string {
   const value = process.env[key];
   if (!value) {
-    throw Error(`${value} is undefined!`);
+    throw Error(`${key} is undefined!`);
   }
   return value;
 }

@@ -30,6 +30,7 @@ jobs:
         run: npm i
 
       - name: Create .env.test file
+        working-directory: ${{ env.DIRECTORY }}
         run: touch .env
           cat << EOF >> .env.test
           PORT = 3000
