@@ -2,10 +2,6 @@ name: Test CI-CD
 
 on:
   push:
-    # paths:
-    #   - "./server/**"
-    # paths-ignore:
-    #   - "**/__test__/**"
     branches:
       - main
 
@@ -13,8 +9,6 @@ env:
   S3_BUCKET_NAME: dwitter-codes/codes
   DIRECTORY: ./server
   REGION: ap-northeast-2
-  # CODE_DEPLOY_APPLICATION_NAME
-  # CODE_DEPLOY_DEPLOYMENT_GROUP_NAME
 
 jobs:
   build:
@@ -24,52 +18,54 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node
+      - name: Set up node
         uses: actions/setup-node@v3
         with:
           node-version: v17.4.0
           cache: "npm"
           cache-dependency-path: ./server/package-lock.json
 
-      - name: Install Dependencies
+      - name: Install dependencies
+        working-directory: ${{ env.DIRECTORY }}
         run: npm i
+
+      - name: Create .env.test file
+        run: touch .env
+          cat << EOF >> .env.test
+          PORT = 3000
+          HERE = seoul
+          EOF
+
+      - name: Compile typescript and test env
         working-directory: ${{ env.DIRECTORY }}
+        run: npm start
 
-      - name: Compile Typescript
-        run: npx tsc
-        working-directory: ${{ env.DIRECTORY }}
+      # - name: Test Connection
+      #   id: test_connect
+      #   run: node ./server/dist/index.js
+      #   env:
+      # HOST: ${{ secrets.HOST }}
+      # USERNAME: ${{ secrets.USERNAME }}
+      # DATABASE: ${{ secrets.DATABASE }}
+      # PASSWORD: ${{ secrets.PASSWORD }}
+      # PORT: ${{ secrets.PORT }}
 
-      # - name: Create .env.test file
-      #   run: touch .env
-      #     cat << EOF >> .env.test
-      #     SECRET = ${{ secrets.SECRET }}
+      # - name: If Connection Pass or Fail
+      #   if: ${{ success() }}
+      #   run: exit 0
 
-      - name: Test Connection
-        id: test_connect
-        run: node ./server/dist/index.js
-        env:
-          # HOST: ${{ secrets.HOST }}
-          # USERNAME: ${{ secrets.USERNAME }}
-          # DATABASE: ${{ secrets.DATABASE }}
-          # PASSWORD: ${{ secrets.PASSWORD }}
-          PORT: ${{ secrets.PORT }}
+      # - name: Make zip file
+      #   run: zip -r $GITHUB_SHA.zip ./server/dist -x **/__test__/**
 
-      - name: If Connection Pass or Fail
-        if: ${{ success() }}
-        run: exit 0
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ env.REGION }}
 
-      - name: Make zip file
-        run: zip -r $GITHUB_SHA.zip ./server/dist -x **/__test__/**
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.REGION }}
-
-      - name: Upload to S3
-        run: aws s3 cp --region $REGION $GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+      # - name: Upload to S3
+      #   run: aws s3 cp --region $REGION $GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
 
       # - name: Code Deploy
       #   run: |

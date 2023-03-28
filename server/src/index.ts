@@ -5,9 +5,24 @@ import mysql from "mysql2";
 dotenv.config();
 const app = express();
 
-app.listen(process.env.PORT, () => {
-  console.log("connect!");
-});
+function required(key: string): string {
+  const value = process.env[key];
+  if (!value) {
+    throw Error(`${value} is undefined!`);
+  }
+  return value;
+}
+
+const config = {
+  port: Number(required("PORT")),
+  here: required("HERE"),
+};
+
+if (config.port > 8000) {
+  app.listen(config.port, () => {
+    console.log("connect!");
+  });
+}
 
 // const pool = mysql.createPool({
 //   host: process.env.HOST,
