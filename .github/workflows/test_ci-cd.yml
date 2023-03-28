@@ -9,6 +9,7 @@ env:
   S3_BUCKET_NAME: dwitter-codes/codes
   DIRECTORY: ./server
   REGION: ap-northeast-2
+  TEST_PORT: 3000
 
 jobs:
   build:
@@ -33,7 +34,7 @@ jobs:
         working-directory: ${{ env.DIRECTORY }}
         run: touch .env
           cat << EOF >> .env.test
-          PORT = 3000
+          PORT = ${{ env.TEST_PORT }}
           HERE = seoul
           EOF
 
